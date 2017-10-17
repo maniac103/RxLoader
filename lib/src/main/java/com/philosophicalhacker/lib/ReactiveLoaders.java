@@ -30,6 +30,7 @@ class ReactiveLoaders {
           observer.onNext(data);
         }
       }));
+      observer.onSubscribe(loadRequest);
     }
   }
 
@@ -54,6 +55,7 @@ class ReactiveLoaders {
           observer.onSuccess(data);
         }
       }));
+      observer.onSubscribe(loadRequest);
     }
   }
 }

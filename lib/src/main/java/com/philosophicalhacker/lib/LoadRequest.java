@@ -3,7 +3,9 @@ package com.philosophicalhacker.lib;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-class LoadRequest<T> {
+import io.reactivex.disposables.Disposable;
+
+class LoadRequest<T> implements Disposable {
   private final LoaderManager loaderManager;
   private final boolean forceReload;
   private final int id;
@@ -20,5 +22,15 @@ class LoadRequest<T> {
     if (forceReload) {
       tLoader.forceLoad();
     }
+  }
+
+  @Override
+  public boolean isDisposed() {
+    return loaderManager.getLoader(id) == null;
+  }
+
+  @Override
+  public void dispose() {
+    loaderManager.destroyLoader(id);
   }
 }
