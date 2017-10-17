@@ -77,7 +77,7 @@ public class RxLoader {
     return makeSingleTransformer(loaderId, false);
   }
 
-  private <T> SingleTransformer<T, T> makeSingleTransformer(final int loadId,
+  public <T> SingleTransformer<T, T> makeSingleTransformer(final int loadId,
       final boolean forceReload) {
     return new SingleTransformer<T, T>() {
       @Override public SingleSource<T> apply(@NonNull final Single<T> upstream) {
