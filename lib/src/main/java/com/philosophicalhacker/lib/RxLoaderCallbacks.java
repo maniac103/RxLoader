@@ -69,6 +69,9 @@ class RxLoaderCallbacks<T> implements LoaderManager.LoaderCallbacks<T> {
     @Override protected void onForceLoad() {
       super.onForceLoad();
       Log.d(TAG, "onForceLoad() called");
+      if (subscription != null) {
+        subscription.dispose();
+      }
       subscription = reactiveType
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
