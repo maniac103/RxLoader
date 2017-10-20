@@ -1,6 +1,7 @@
 package com.philosophicalhacker.lib;
 
 import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -11,7 +12,7 @@ import io.reactivex.functions.Consumer;
  */
 interface ReactiveType<T> {
   ReactiveType<T> subscribeOn(Scheduler scheduler);
-  void subscribe(Consumer<T> consumer, Consumer<Throwable> throwableConsumer);
+  Disposable subscribe(Consumer<T> consumer, Consumer<Throwable> throwableConsumer);
 
   ReactiveType<T> observeOn(Scheduler scheduler);
 
@@ -27,8 +28,8 @@ interface ReactiveType<T> {
       return this;
     }
 
-    @Override public void subscribe(Consumer<T> consumer, Consumer<Throwable> throwableConsumer) {
-      upstream.subscribe(consumer, throwableConsumer);
+    @Override public Disposable subscribe(Consumer<T> consumer, Consumer<Throwable> throwableConsumer) {
+      return upstream.subscribe(consumer, throwableConsumer);
     }
 
     @Override public ReactiveType<T> observeOn(Scheduler scheduler) {
@@ -49,8 +50,8 @@ interface ReactiveType<T> {
       return this;
     }
 
-    @Override public void subscribe(Consumer<T> consumer, Consumer<Throwable> throwableConsumer) {
-      upstream.subscribe(consumer, throwableConsumer);
+    @Override public Disposable subscribe(Consumer<T> consumer, Consumer<Throwable> throwableConsumer) {
+      return upstream.subscribe(consumer, throwableConsumer);
     }
 
     @Override public ReactiveType<T> observeOn(Scheduler scheduler) {

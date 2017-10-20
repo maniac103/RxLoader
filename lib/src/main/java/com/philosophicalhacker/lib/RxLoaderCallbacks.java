@@ -9,6 +9,7 @@ import android.util.Log;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 class RxLoaderCallbacks<T> implements LoaderManager.LoaderCallbacks<T> {
@@ -45,7 +46,7 @@ class RxLoaderCallbacks<T> implements LoaderManager.LoaderCallbacks<T> {
     private final ReactiveType<T> reactiveType;
     private static final String TAG = RxAndroidLoader.class.getSimpleName();
     private T pendingData;
-
+    private Disposable subscription;
     private Throwable error;
 
     RxAndroidLoader(Context context, ReactiveType<T> reactiveType) {
@@ -60,7 +61,7 @@ class RxLoaderCallbacks<T> implements LoaderManager.LoaderCallbacks<T> {
         Log.d(TAG, "delivering pending data");
         deliverResult(pendingData);
         pendingData = null;
-      } else {
+      } else if (subscription == null) {
         forceLoad();
       }
     }
@@ -68,7 +69,7 @@ class RxLoaderCallbacks<T> implements LoaderManager.LoaderCallbacks<T> {
     @Override protected void onForceLoad() {
       super.onForceLoad();
       Log.d(TAG, "onForceLoad() called");
-      reactiveType
+      subscription = reactiveType
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .subscribe(new Consumer<T>() {
@@ -81,6 +82,15 @@ class RxLoaderCallbacks<T> implements LoaderManager.LoaderCallbacks<T> {
               safeDeliverResult(null);
             }
           });
+    }
+
+    @Override protected void onReset() {
+      if (subscription != null) {
+        subscription.dispose();
+        subscription = null;
+      }
+      pendingData = null;
+      error = null;
     }
 
     Throwable getError() {
