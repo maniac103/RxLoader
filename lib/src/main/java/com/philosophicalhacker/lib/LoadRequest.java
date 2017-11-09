@@ -17,10 +17,10 @@ class LoadRequest<T> implements Disposable {
   }
 
   void execute(RxLoaderCallbacks<T> callbacks) {
-    final Loader<T> tLoader =
-        loaderManager.initLoader(id, null, callbacks);
     if (forceReload) {
-      tLoader.forceLoad();
+      loaderManager.restartLoader(id, null, callbacks);
+    } else {
+      loaderManager.initLoader(id, null, callbacks);
     }
   }
 
