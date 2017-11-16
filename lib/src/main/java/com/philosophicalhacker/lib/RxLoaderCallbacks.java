@@ -13,7 +13,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 class RxLoaderCallbacks<T> implements LoaderManager.LoaderCallbacks<T> {
-
   private final Context context;
   private final ReactiveType<T> reactiveType;
   private final ReactiveEmitter<T> reactiveEmitter;
@@ -44,6 +43,7 @@ class RxLoaderCallbacks<T> implements LoaderManager.LoaderCallbacks<T> {
   //------------------------------------------------------------------
   private static class RxAndroidLoader<T> extends Loader<T> {
     private final ReactiveType<T> reactiveType;
+    private static final boolean D = BuildConfig.DEBUG;
     private static final String TAG = RxAndroidLoader.class.getSimpleName();
     private T pendingData;
     private Disposable subscription;
@@ -56,9 +56,9 @@ class RxLoaderCallbacks<T> implements LoaderManager.LoaderCallbacks<T> {
 
     @Override protected void onStartLoading() {
       super.onStartLoading();
-      Log.d(TAG, "onStartLoading() called");
+      if (D) Log.d(TAG, "onStartLoading() called");
       if (pendingData != null) {
-        Log.d(TAG, "delivering pending data");
+        if (D) Log.d(TAG, "delivering pending data");
         deliverResult(pendingData);
         pendingData = null;
       } else if (subscription == null) {
@@ -68,7 +68,7 @@ class RxLoaderCallbacks<T> implements LoaderManager.LoaderCallbacks<T> {
 
     @Override protected void onForceLoad() {
       super.onForceLoad();
-      Log.d(TAG, "onForceLoad() called");
+      if (D) Log.d(TAG, "onForceLoad() called");
       if (subscription != null) {
         subscription.dispose();
       }
@@ -105,10 +105,10 @@ class RxLoaderCallbacks<T> implements LoaderManager.LoaderCallbacks<T> {
     //------------------------------------------------------------------
     private void safeDeliverResult(T t) {
       if (isStarted()) {
-        Log.d(TAG, "delivering result");
+        if (D) Log.d(TAG, "delivering result");
         deliverResult(t);
       } else {
-        Log.d(TAG, "storing result");
+        if (D) Log.d(TAG, "storing result");
         pendingData = t;
       }
     }
