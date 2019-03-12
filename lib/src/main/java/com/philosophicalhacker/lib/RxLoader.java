@@ -1,7 +1,8 @@
 package com.philosophicalhacker.lib;
 
 import android.content.Context;
-import android.support.v4.app.LoaderManager;
+
+import androidx.loader.app.LoaderManager;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;

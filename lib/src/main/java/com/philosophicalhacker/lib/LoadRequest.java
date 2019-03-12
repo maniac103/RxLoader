@@ -1,8 +1,6 @@
 package com.philosophicalhacker.lib;
 
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-
+import androidx.loader.app.LoaderManager;
 import io.reactivex.disposables.Disposable;
 
 class LoadRequest<T> implements Disposable {

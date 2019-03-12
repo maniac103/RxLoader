@@ -3,12 +3,13 @@ package com.philosophicalhacker.rxloader;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import com.philosophicalhacker.lib.RxLoader;
 import com.squareup.leakcanary.LeakCanary;
+
+import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
